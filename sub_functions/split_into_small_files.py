@@ -3,10 +3,11 @@ import os
 
 def split_file(file, folder, lines_per_file):
     """
-    input:
-        file (txt format) - file to split
-        folder - where small files will be saved
-        lines_per_file (int) - number of lines in small file
+
+    :param file: (txt format) - file to split
+    :param folder: where small files will be saved
+    :param lines_per_file: (int) - number of lines in small file
+    :return:
     example:
         python split_into_small_files.py big_file.txt test 10000
     """

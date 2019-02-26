@@ -1,5 +1,5 @@
 from model import Model
-from tqdm import tqdm_notebook as tqdm
+#ffrom tqdm import tqdm_notebook as tqdm
 from conllu import parse
 
 
@@ -46,7 +46,7 @@ class ParserUDpipe:
         first = False
         with open(CONLLU_FILE, 'r') as file_r, open(FINAL_FILE + '_' + token + '_string.txt', 'a') as file_w:
             to_parse = ''
-            for line in tqdm(file_r):
+            for line in file_r:
                 if '# newpar' in line and not first:
                     first = True
                 else:

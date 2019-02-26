@@ -20,7 +20,7 @@ def parsing(filename, MODEL, folder, new_folder):
 def main():
     folder = sys.argv[1]
     MODEL = sys.argv[2]
-    pool = multiprocessing.Pool(2)
+    pool = multiprocessing.Pool(8)
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
     files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
     new_folder = folder + '_conllu'

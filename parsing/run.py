@@ -9,14 +9,18 @@ from conllu import parse
 def parsing(filename, MODEL, folder, new_folder):
     print(filename)
     parser = ParserUDpipe()
-    parser.parsing2conllu('./{}/{}'.format(folder, filename), '{}/conllu_{}'.format(new_folder, filename), MODEL)
+    conlluf = '{}/conllu_{}'.format(new_folder, filename)
+    parser.parsing2conllu('./{}/{}'.format(folder, filename), conlluf, MODEL)
+    parser.lines2tokens(conlluf, conlluf.replace('.txt', 'lemma.txt'), token='lemma')
+    parser.lines2tokens(conlluf, conlluf.replace('.txt', 'token.txt'), token='form')
+    parser.lines2tokens(conlluf, conlluf.replace('.txt', 'upostag.txt'), token='upostag')
     return filename
 
 
 def main():
     folder = sys.argv[1]
     MODEL = sys.argv[2]
-    pool = multiprocessing.Pool(7)
+    pool = multiprocessing.Pool(2)
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
     files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
     new_folder = folder + '_conllu'

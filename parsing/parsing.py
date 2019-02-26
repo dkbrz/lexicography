@@ -2,6 +2,7 @@ from model import Model
 from tqdm import tqdm_notebook as tqdm
 from conllu import parse
 
+
 class ParserUDpipe:
     """Parses text using udpipe."""
  

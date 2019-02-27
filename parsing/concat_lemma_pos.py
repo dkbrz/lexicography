@@ -24,6 +24,7 @@ def lemma_plus_pos(filename, folder, new_folder):
             line_pos = file_p.readline().split()
             lemma_pos = ' '.join([x + '_' + y for x, y in zip(line_lemma, line_pos)]).strip()
             file_w.write(lemma_pos + '\n')
+    return filename
 
 
 def main():

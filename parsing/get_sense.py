@@ -7,6 +7,7 @@ import adagram
 
 WINDOW_SIZE = 7
 
+
 def find_context(ind, words, window=WINDOW_SIZE):
     if ind - window < 0:
         start = 0

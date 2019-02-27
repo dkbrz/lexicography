@@ -6,7 +6,6 @@ import multiprocessing
 
 def lemma_plus_pos(filename, folder, new_folder):
     """
-
     :param lemma_file: file (each line - line of lemmas, sep - ' ')
     :param pos_file: file (each line - line of pos, sep - ' ')
     :param output_file: file (each line - lemma1_pos1 lemma2_pos2 ... lemman_posn)

@@ -5,7 +5,7 @@ import subprocess
 import numpy as np
 import adagram
 
-WINDOW_SIZE = 9
+WINDOW_SIZE = 7
 
 def find_context(ind, words, window=WINDOW_SIZE):
     if ind - window < 0:
@@ -67,7 +67,8 @@ def main():
         '--min-freq', 100,
         '--dim', 300,
         '--epochs', 5,
-        '--workers', 8
+        '--workers', 8,
+        '--window', 3
     ])
 
     vm = adagram.VectorModel.load("out.pkl")

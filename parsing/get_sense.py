@@ -7,7 +7,7 @@ import adagram
 import multiprocessing
 from functools import partial
 
-WINDOW_SIZE = 7
+WINDOW_SIZE = 5
 
 
 def find_context(ind, words, window=WINDOW_SIZE):
@@ -73,7 +73,7 @@ def main():
         '--min-freq', '100',
         '--dim', '300',
         '--workers', '8',
-        '--window', '3'
+        '--window', '5'
     ])
 
     vm = adagram.VectorModel.load('{}.pkl'.format(lang))

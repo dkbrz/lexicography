@@ -72,7 +72,6 @@ def main():
         '{}.pkl'.format(lang),
         '--min-freq', '100',
         '--dim', '300',
-        '--epochs', '5',
         '--workers', '8',
         '--window', '3'
     ])

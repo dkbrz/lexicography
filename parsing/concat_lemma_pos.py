@@ -29,7 +29,7 @@ def main():
     folder = sys.argv[1]
     pool = multiprocessing.Pool(8)
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma' in f]
-    files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
+    files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     new_folder = folder + '_lemma_pos'
     if not os.path.exists(new_folder):
         os.mkdir(new_folder)

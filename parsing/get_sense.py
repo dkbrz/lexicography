@@ -1,11 +1,13 @@
 import sys
 import os
+import re
 import subprocess
 import numpy as np
 import adagram
 
+WINDOW_SIZE = 9
 
-def find_context(ind, words, window=5):
+def find_context(ind, words, window=WINDOW_SIZE):
     if ind - window < 0:
         start = 0
     else:
@@ -30,7 +32,7 @@ def find_sense(word, context, model):
     return str(sense)
 
 
-def sense_line(line, model, window=5):
+def sense_line(line, model, window=WINDOW_SIZE):
     new_line = ''
     words = line.split()
     for ind, word in enumerate(words):
@@ -41,7 +43,7 @@ def sense_line(line, model, window=5):
     return new_line.strip()
 
 
-def sense_file(file, model, folder, folder_sense, window=5):
+def sense_file(file, model, folder, folder_sense, window=WINDOW_SIZE):
     with open('{}/{}'.format(folder, file), 'r') as file_r, open('{}/sense_'.format(folder_sense) + file, 'a') as file_w:
         for line in file_r:
             new_file = sense_line(line, model=model, window=window)
@@ -58,15 +60,23 @@ def main():
             info = f_r.read()
             f_w.write(info)
 
-    subprocess.call(['adagram-train', '{}/train.txt'.format(folder, file), 'out.pkl'])
+    subprocess.call([
+        'adagram-train',
+        '{}/{}/train.txt'.format(folder, file),
+        'out.pkl',
+        '--min-freq', 100,
+        '--dim', 300,
+        '--epochs', 5,
+        '--workers', 8
+    ])
 
     vm = adagram.VectorModel.load("out.pkl")
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_upostag' in f]
-    files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
+    files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
     for f in files:
-        sense_file(f, vm, folder, folder_sense, window=5)
+        sense_file(f, vm, folder, folder_sense, window=WINDOW_SIZE)
 
 
 if __name__ == "__main__":

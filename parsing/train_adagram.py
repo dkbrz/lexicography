@@ -10,50 +10,6 @@ from functools import partial
 WINDOW_SIZE = 5
 
 
-def find_context(ind, words, window=WINDOW_SIZE):
-    if ind - window < 0:
-        start = 0
-    else:
-        start = ind - window
-
-    if ind + window > len(words):
-        end = len(words) + 1
-    else:
-        end = ind + window + 1
-
-    left = words[start:ind]
-    right = words[ind + 1:end]
-    return left + right
-
-
-def find_sense(word, context, model):
-    try:
-        probs = model.disambiguate(word, context)
-        sense = np.argmax(probs, axis=0)
-    except:
-        sense = 0
-    return str(sense)
-
-
-def sense_line(line, model, window=WINDOW_SIZE):
-    new_line = ''
-    words = line.split()
-    for ind, word in enumerate(words):
-        context = find_context(ind, words, window=window)
-        sense = find_sense(word, context, model=model)
-        word = word + '_' + sense
-        new_line += word + ' '
-    return new_line.strip()
-
-
-def sense_file(file, model, folder, folder_sense, window=WINDOW_SIZE):
-    with open('{}/{}'.format(folder, file), 'r') as file_r, open('{}/sense_'.format(folder_sense) + file, 'a') as file_w:
-        for line in file_r:
-            new_file = sense_line(line, model=model, window=window)
-            file_w.write(new_file + '\n')
-    return file
-
-
 def main():
     folder = sys.argv[1]
     folder_sense = sys.argv[2]

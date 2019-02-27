@@ -4,6 +4,8 @@ import re
 import subprocess
 import numpy as np
 import adagram
+import multiprocessing
+from functools import partial
 
 WINDOW_SIZE = 7
 
@@ -49,6 +51,7 @@ def sense_file(file, model, folder, folder_sense, window=WINDOW_SIZE):
         for line in file_r:
             new_file = sense_line(line, model=model, window=window)
             file_w.write(new_file + '\n')
+    return file
 
 
 def main():
@@ -77,8 +80,10 @@ def main():
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
-    for f in files:
-        sense_file(f, vm, folder, folder_sense, window=WINDOW_SIZE)
+    partial_parse = partial(file, model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
+    pool = multiprocessing.Pool(8)
+    for i in pool.imap(partial_parse, files):
+        print(i)
 
 
 if __name__ == "__main__":

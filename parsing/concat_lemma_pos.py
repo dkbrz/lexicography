@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 from functools import partial
 import multiprocessing
 

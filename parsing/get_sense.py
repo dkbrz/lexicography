@@ -62,7 +62,7 @@ def main():
 
     subprocess.call([
         'adagram-train',
-        '{}/{}/train.txt'.format(folder, file),
+        '{}/train.txt'.format(folder),
         'out.pkl',
         '--min-freq', 100,
         '--dim', 300,

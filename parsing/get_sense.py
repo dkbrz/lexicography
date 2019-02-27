@@ -70,11 +70,11 @@ def main():
         'adagram-train',
         '{}/train.txt'.format(folder),
         '{}.pkl'.format(lang),
-        '--min-freq', 100,
-        '--dim', 300,
-        '--epochs', 5,
-        '--workers', 8,
-        '--window', 3
+        '--min-freq', '100',
+        '--dim', '300',
+        '--epochs', '5',
+        '--workers', '8',
+        '--window', '3'
     ])
 
     vm = adagram.VectorModel.load('{}.pkl'.format(lang))

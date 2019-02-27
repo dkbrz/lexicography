@@ -57,17 +57,19 @@ def sense_file(file, model, folder, folder_sense, window=WINDOW_SIZE):
 def main():
     folder = sys.argv[1]
     folder_sense = sys.argv[2]
+    lang = sys.argv[3]
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'txt' in f]
     files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
+    print('Joining files...')
     for file in files:
         with open('{}/{}'.format(folder, file), 'r') as f_r, open('{}/train.txt'.format(folder), 'a') as f_w:
             info = f_r.read()
             f_w.write(info)
-
+    print('Training model...')
     subprocess.call([
         'adagram-train',
         '{}/train.txt'.format(folder),
-        'out.pkl',
+        '{}.pkl'.format(lang),
         '--min-freq', 100,
         '--dim', 300,
         '--epochs', 5,
@@ -75,7 +77,7 @@ def main():
         '--window', 3
     ])
 
-    vm = adagram.VectorModel.load("out.pkl")
+    vm = adagram.VectorModel.load('{}.pkl'.format(lang))
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_upostag' in f]
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     if not os.path.exists(folder_sense):

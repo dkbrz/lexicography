@@ -21,9 +21,11 @@ def main():
     folder = sys.argv[1]
     MODEL = sys.argv[2]
     pool = multiprocessing.Pool(8)
-    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
-    files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
     new_folder = folder + '_conllu'
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and not os.path.exists('{}/conllu_{}'.format(new_folder, f))]
+    files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
+    print(len(files))
+    #new_folder = folder + '_conllu'
     if not os.path.exists(new_folder):
         os.mkdir(new_folder)
     partial_parse = partial(parsing, folder=folder, MODEL=MODEL, new_folder=new_folder)

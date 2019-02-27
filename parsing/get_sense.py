@@ -80,7 +80,7 @@ def main():
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
-    partial_parse = partial(file, model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
+    partial_parse = partial(model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
     pool = multiprocessing.Pool(8)
     for i in pool.imap(partial_parse, files):
         print(i)

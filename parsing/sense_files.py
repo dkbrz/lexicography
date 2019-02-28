@@ -3,6 +3,7 @@ import os
 import re
 import numpy as np
 import adagram
+import multiprocessing
 
 WINDOW_SIZE = 5
 
@@ -59,10 +60,16 @@ def main():
     vm = adagram.VectorModel.load(vm)
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_upostag' in f]
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]), reverse=True)
+
+    pool = multiprocessing.Pool(8)
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
-    for f in files:
-        sense_file(f, vm, folder, folder_sense, window=WINDOW_SIZE)
+    partial_sense = sense_file(model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
+    for i in pool.imap(partial_sense, files):
+        print(i)
+
+    #for f in files:
+    #    sense_file(f, vm, folder, folder_sense, window=WINDOW_SIZE)
 
 
 if __name__ == "__main__":

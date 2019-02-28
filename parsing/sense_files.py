@@ -5,6 +5,8 @@ import numpy as np
 import adagram
 import multiprocessing
 from functools import partial
+import warnings
+warnings.filterwarnings("ignore")
 
 WINDOW_SIZE = 5
 

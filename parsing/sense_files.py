@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 import numpy as np
 import adagram
 
@@ -57,7 +58,7 @@ def main():
 
     vm = adagram.VectorModel.load(vm)
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_upostag' in f]
-    files.sort(key=lambda x: int(x.split('.')[0].split('_')[1]))
+    files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]), reverse=True)
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
     for f in files:

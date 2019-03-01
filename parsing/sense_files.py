@@ -67,7 +67,7 @@ def main():
     pool = multiprocessing.Pool(8)
     if not os.path.exists(folder_sense):
         os.mkdir(folder_sense)
-    partial_sense = partial(sense_file, model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
+    partial_sense = partial(model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
     for i in pool.imap(partial_sense, files):
         print(i)
 

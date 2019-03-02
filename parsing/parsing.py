@@ -1,5 +1,4 @@
 from model import Model
-#ffrom tqdm import tqdm_notebook as tqdm
 from conllu import parse
 
 
@@ -41,10 +40,8 @@ class ParserUDpipe:
         print('Write into', conllu_path)
         
     def lines2tokens(self, CONLLU_FILE, FINAL_FILE, token='form'):
-        FILE = CONLLU_FILE.replace('.txt', '')
-        FILE = FILE.replace('conllu_', '')
         first = False
-        with open(CONLLU_FILE, 'r') as file_r, open(FINAL_FILE + '_' + token + '_string.txt', 'a') as file_w:
+        with open(CONLLU_FILE, 'r') as file_r, open(FINAL_FILE, 'a') as file_w:
             to_parse = ''
             for line in file_r:
                 if '# newpar' in line and not first:
@@ -60,4 +57,4 @@ class ParserUDpipe:
             sentences = parse(to_parse)
             token_string = self.get_token_string(sentences, token=token)
             file_w.write(token_string)
-            print('Write into', FILE + '_' + token + '_string.txt')
+            print('Write into', FINAL_FILE)

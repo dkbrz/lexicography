@@ -1,7 +1,7 @@
 import os
 import argparse
 
-LINES_PER_FILE = 5
+LINES_PER_FILE = 100000
 
 
 def split_bigfile(path_bigfile, new_folder, lang, lines_per_file=LINES_PER_FILE):

@@ -1,6 +1,5 @@
 import ufal.udpipe
-# ufal.udpipe.Model etc. are SWIG-magic and cannot be detected by pylint
-# pylint: disable=no-member
+
 
 class Model:
     def __init__(self, path):
@@ -55,11 +54,3 @@ class Model:
         output += output_format.finishDocument()
 
         return output
-
-# Can be used as
-#  model = Model('english-ud-1.2-160523.udpipe')
-#  sentences = model.tokenize("Hi there. How are you?")
-#  for s in sentences:
-#      model.tag(s)
-#      model.parse(s)
-#  conllu = model.write(sentences, "conllu")

@@ -56,12 +56,25 @@ def sense_file(file, model, folder, folder_sense, window=WINDOW_SIZE):
 
 
 def main():
-    folder = sys.argv[1]  # where small files with lemma_pos
-    folder_sense = sys.argv[2]  # new folder for disambiguated files
-    vm = sys.argv[3]  # model
+    parser = argparse.ArgumentParser(description='Parsing corpus using UDPipe.')
+    parser.add_argument('lang_1', type=str, help='name of the language to parse as in downloaded corpus \
+            (the name must match the .txt file name from the corpus)')
+    parser.add_argument('lang_2', type=str, help='name of the second language in pair as in downloaded corpus \
+                (the name must match the .txt file name from the corpus)')
+    parser.add_argument('vm', type=str, help='Adagram model')
+    args = parser.parse_args()
+    lang_1 = args.lang_1
+    lang_2 = args.lang_2
+    vm = args.vm
+
+    folder = '../languages/' + lang_1 + '_' + lang_2 + '/' + lang_1
+    if not os.path.isdir(folder):
+        folder = '../languages/' + lang_2 + '_' + lang_1 + '/' + lang_1  # where small files with lemma_pos
+    folder_sense = folder + '/' + lang_1 + '_sense'  # new folder for disambiguated files
+    folder += '/' + lang_1 + '_lemma_pos'
 
     vm = adagram.VectorModel.load(vm)
-    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_upostag' in f]
+    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f)) and 'lemma_pos' in f]
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]), reverse=True)
 
     pool = multiprocessing.Pool(8)
@@ -70,9 +83,6 @@ def main():
     partial_sense = partial(sense_file, model=vm, folder=folder, folder_sense=folder_sense, window=WINDOW_SIZE)
     for i in pool.imap(partial_sense, files):
         print(i)
-
-    #for f in files:
-    #    sense_file(f, vm, folder, folder_sense, window=WINDOW_SIZE)
 
 
 if __name__ == "__main__":

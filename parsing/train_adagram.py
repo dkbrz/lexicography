@@ -53,8 +53,7 @@ def main():
         '--workers', '8',
         '--window', '5'
     ])
-
-    vm = adagram.VectorModel.load('{}.pkl'.format(lang))
+    vm = adagram.VectorModel.load('{}/{}.pkl'.format(folder, lang_1))
     files = [f for f in os.listdir(folder + '/' + lang_1 + '_lemma_pos')]
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     sense_folder = folder + '/' + lang_1 + '_sense'

@@ -23,7 +23,7 @@ def main():
         (the name must match the .txt file name from the corpus)')
     parser.add_argument('lang_2', type=str, help='name of the second language in pair as in downloaded corpus \
             (the name must match the .txt file name from the corpus)')
-    parser.add_argument('--train', type=str, help='train new model?', dest='train_bool',
+    parser.add_argument('--train', help='train new model?', dest='train_bool',
                         action='store_true', default=False)
     args = parser.parse_args()
     lang_1 = args.lang_1

@@ -15,7 +15,7 @@ def main():
     folder = '../languages/' + lang_1 + '_' + lang_2
     if not os.path.isdir(folder):
         folder = '../languages/' + lang_2 + '_' + lang_1
-    files = [f for f in os.listdir(folder + '/' + lang_1 + '_sense') if '.txt' in f]
+    files = [f for f in os.listdir(folder + '/' + lang_1 + '/' + lang_1 + '_sense') if '.txt' in f]
     files.sort(key=lambda x: int(re.findall('[0-9]+', x)[0]))
     train_file = '{}/{}_align.txt'.format(folder, lang_1)
 

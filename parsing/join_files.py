@@ -25,8 +25,8 @@ def main():
         print('Adding file ' + f + '...')
         with open(f, 'r') as f_r,\
                 open(train_file, 'a') as f_w:
-            info = f_r.read()
-            f_w.write(info)
+            info = f_r.read().rstrip()
+            f_w.write(info+'\n')
     print('File ' + train_file + ' is ready.')
 
 

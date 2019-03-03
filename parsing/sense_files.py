@@ -6,6 +6,7 @@ import adagram
 import multiprocessing
 from functools import partial
 import warnings
+import argparse
 warnings.filterwarnings("ignore")
 
 WINDOW_SIZE = 5

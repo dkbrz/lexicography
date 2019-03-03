@@ -21,7 +21,7 @@ def main():
 
     print('Joining files...')
     for key, file in enumerate(files):
-        f = '{}/{}'.format(folder + '/' + lang_1 + '_sense', file)
+        f = '{}/{}'.format(folder + '/' + lang_1 + '/' + lang_1 + '_sense', file)
         print('Adding file ' + f + '...')
         with open(f, 'r') as f_r,\
                 open(train_file, 'a') as f_w:

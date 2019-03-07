@@ -40,21 +40,18 @@ class ParserUDpipe:
         print('Write into', conllu_path)
         
     def lines2tokens(self, CONLLU_FILE, FINAL_FILE, token='form'):
-        first = False
         with open(CONLLU_FILE, 'r') as file_r, open(FINAL_FILE, 'a') as file_w:
             to_parse = ''
+            found = False
             for line in file_r:
-                if '# newpar' in line and not first:
-                    first = True
-                else:
-                    if '# newpar' not in line:
-                        to_parse += line
-                    else:
-                        sentences = parse(to_parse)
-                        token_string = self.get_token_string(sentences, token=token)
-                        file_w.write(token_string + '\n')
-                        to_parse = ''
-            sentences = parse(to_parse)
-            token_string = self.get_token_string(sentences, token=token)
-            file_w.write(token_string)
-            print('Write into', FINAL_FILE)
+                if 'SpacesAfter=\\n\\n' not in line and not found:
+                    to_parse += line
+                if 'SpacesAfter=\\n\\n' in line:
+                    to_parse += line
+                    found = True
+                if found:
+                    sentences = parse(to_parse)
+                    token_string = self.get_token_string(sentences, token=token)
+                    file_w.write(token_string + '\n')
+                    to_parse = ''
+                    found = False

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} Фольклорный архив {% endblock %}
+{% block content %}
+<style>
+a{color: red;}
+
+span.lemma{
+    font-weight: bold;
+    font-size: 25px;
+}
+
+span.pos{
+    font-weight: bold;
+    font-size: 15px;
+}
+div.entry{
+    margin-left: 150px;
+	margin-top: 30px;
+}
+</style>
+<div class="entry">
+    <span class="lemma"> {{word['lemma']}}</span>, <span class="pos">{{word['pos']}}</span>
+</div>
+<div class="entry">
+    {% for exm in examples %}
+        {{exm.sent_left}} <br> {{exm.sent_right}} <br><br>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} Фольклорный архив {% endblock %}
+{% block content %}
+<style>
+a{color: red;}
+div.search{
+	margin-left: 200px;
+	margin-top: 22px;
+	width: 67%
+}
+.text{
+	font-size: 18px;
+}
+.labels{
+	font-size: 25px;
+	font-weight: bold;
+}
+table{
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+tr.search, th.search{
+    height: 30px;
+}
+</style>
+<div class="search">
+    {% include 'blocks/query_form.html' %}
+</div>
+<div class="search text">
+    {% if result %}
+        <table>
+            <th> Результаты </th>
+            {% for word in result %}
+                <tr class="search">
+                    <td>
+                        <a href="{{prefix}}/entry?lemma={{word[0]}}&lang={{word[2]}}&pos={{word[1]}}"> {{word[0]}}, {{word[1]}}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+
+{% endblock %}

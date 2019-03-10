@@ -37,7 +37,7 @@ tr.search, th.search{
             {% for word in result %}
                 <tr class="search">
                     <td>
-                        <a href="{{prefix}}/entry?lemma={{word[0]}}&lang={{word[2]}}&pos={{word[1]}}"> {{word[0]}}, {{word[1]}}</a>
+                        <a href="{{prefix}}/entry?lemma={{word[0]}}&source={{word[2]}}&target={{target}}&pos={{word[1]}}"> {{word[0]}}, {{word[1]}}</a>
                     </td>
                 </tr>
             {% endfor %}

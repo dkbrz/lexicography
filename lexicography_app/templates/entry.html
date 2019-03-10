@@ -17,13 +17,60 @@ div.entry{
     margin-left: 150px;
 	margin-top: 30px;
 }
+
+table{
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+td{
+    padding: 5px;
+}
+.spoiler_body {display:none;}
+.spoiler_links {cursor:pointer;}
+
 </style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+ $('.spoiler_links').click(function(){
+  $(this).parent().children('div.spoiler_body').toggle('normal');
+  return false;
+ });
+});
+</script>
 <div class="entry">
     <span class="lemma"> {{word['lemma']}}</span>, <span class="pos">{{word['pos']}}</span>
 </div>
 <div class="entry">
     {% for exm in examples %}
-        {{exm.sent_left}} <br> {{exm.sent_right}} <br><br>
+    {% if examples[exm] %}
+    <div class="row">
+        {{word['lemma']}}, {{exm}}
+    </div>
+        {% for translation in examples[exm] %}
+            <div>
+             <a href="" class="spoiler_links">n={{translation[0][1]}}, {{translation[0][0].lemma}}, {{translation[0][0].pos}}, {{translation[0][0].sense}}</a>
+                <div class="row spoiler_body">
+                    <table class="col-md-8 row">
+                        <colgroup>
+                            <col style="width:50%">
+                            <col style="width:50%">
+                          </colgroup>
+                            {% for i in translation[1] %}
+                            <tr>
+                                <td>{{ i[0] | safe }}</td>
+                                <td>{{ i[1] | safe }}</td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
     {% endfor %}
 </div>
 

@@ -40,6 +40,10 @@ def main():
         with open(f, 'r') as f_r,\
                 open(train_file, 'a') as f_w:
             info = f_r.read().rstrip()
+            info = re.sub('._PUNCT', '', info)
+            info = re.sub(' +', ' ', info)
+            info = re.sub('\n ', '\n', info)
+            info = re.sub(' \n', '\n', info)
             f_w.write(info + '\n')
     print('File ' + train_file + ' is ready.')
 
@@ -51,7 +55,7 @@ def main():
         '--min-freq', '100',
         '--dim', '300',
         '--workers', '8',
-        '--window', '5'
+        '--window', '3'
     ])
 
 

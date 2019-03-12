@@ -18,6 +18,16 @@ class ParserUDpipe:
             file.write(conllu)
             
     def get_token_sent(self, sent, token='form'):
+        if token == 'lemma':
+            result = ''
+            pos_tags = [t['upostag'] for t in sent]
+            lemmas = [t['lemma'] for t in sent]
+            for i, l in enumerate(lemmas):
+                if pos_tags[i] != 'PROPN':
+                    result += l.lower() + ' '
+                else:
+                    result += l + ' '
+            return result.strip()
         return ' '.join([t[token] for t in sent]).strip()
     
     def get_token_string(self, sentences, token='form'):

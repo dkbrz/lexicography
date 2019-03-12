@@ -1,14 +1,10 @@
-<table>
-    <form>
-        <select name="source">
-          <option value=1>EN|Английский</option>
-          <option value=2>RU|Русский</option>
-        </select>
-        <select name="target">
-          <option value=1>EN|Английский</option>
-          <option value=2>RU|Русский</option>
-        </select>
-        <input type="text" name="lemma">
-        <input type="submit">
-    </form>
-</table>
+<div class="row" style="margin-top: 100px">
+        <form>
+            <select name="direction" class="col-md-2" style="margin-right: 10px;">
+                <option value="1-2">EN-RU</option>
+                <option value="2-1">RU-EN</option>
+            </select>
+            <input type="text" name="lemma" class="col-md-6" style="margin-right: 10px;">
+            <button value="value" class="col-md-2" type="submit">поиск</button>
+        </form>
+</div>

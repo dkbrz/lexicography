@@ -11,6 +11,7 @@ import re
 import time
 import uuid
 import xlsxwriter
+import adagram
 
 from functools import wraps, update_wrapper
 from sqlalchemy import func, select, and_
@@ -35,6 +36,17 @@ from nltk.tokenize import sent_tokenize
 
 DB = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(CONFIG['USER'], CONFIG['PASSWORD'],
                                              CONFIG['HOST'], CONFIG['PORT'], CONFIG['DATABASE'])
+
+ADAGRAM = {}
+
+for i in os.listdir('./lexicography_app/models/'):
+    lang = i.split('.')[0]
+    ADAGRAM[lang] = adagram.VectorModel.load('./lexicography_app/models/%s' % i)
+
+print(ADAGRAM)
+
+LANGS = {1: 'en', 2:'ru'}
+
 def create_app():
     app = Flask(__name__, static_url_path='/static', static_folder='static')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -62,9 +74,12 @@ def index():
 @app.route("/search", methods=['GET'])
 def search_page():
     result = []
+    target=0
     if request.args:
-        result = find_candidates(request.args.get('lemma', type=str), request.args.get('source', type=int))
-    return render_template('search.html', result=result, target=request.args.get('target', type=int))
+        source = request.args.get('direction', type=str).split('-')[0]
+        target = request.args.get('direction', type=str).split('-')[1]
+        result = find_candidates(request.args.get('lemma', type=str), source)
+    return render_template('search.html', result=result, target=target)
 
 
 def find_candidates(lemma, lang):
@@ -100,10 +115,13 @@ def process_entry(lemma, pos, source, target, reversed):
                                                                 Dictionary.lang == source,
                                                                 Dictionary.pos == pos).all()]
     result = {}
+    probabilities = ADAGRAM[LANGS[source]].word_sense_probs('{}_{}'.format(lemma, pos))
     for i in senses:
-        result[i[0]] = process_one_sense(i[1], target, reversed=reversed)
-    return result    #senses = translations_for_one_sense(senses[0], reversed=False)
-    #result = {i[0]:[i[1], 0], {}]}
+        neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
+        result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0]}
+        result[i[0]]['translations'] = process_one_sense(i[1], target, reversed=reversed)
+    result = [result[item] for item in sorted(result, key=lambda x: result[x]['prob'], reverse=True)]
+    return result
 
 
 def get_examples(left, right):
@@ -126,10 +144,10 @@ def prettify(pair, alignment):
     left = pair.sent_left.split()
     right = pair.sent_right.split()
     for i in alignment[0]:
-        left[i] = '<b>'+left[i]+'</b>'
+        left[i] = '<b class="align">'+left[i]+'</b>'
     left = ' '.join(left)
     for i in alignment[1]:
-        right[i] = '<b>' + right[i] + '</b>'
+        right[i] = '<b class="align">' + right[i] + '</b>'
     right = ' '.join(right)
     return left, right
 

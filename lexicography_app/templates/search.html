@@ -2,6 +2,21 @@
 {% block title %} Поиск {% endblock %}
 {% block content %}
 <style>
+
+input[type=text], button[type=submit], select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+button[type=submit], select {
+  background-color: #EF0101;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 a{color: red;}
 div.search{
 	margin-left: 200px;
@@ -37,7 +52,7 @@ tr.search, th.search{
             {% for word in result %}
                 <tr class="search">
                     <td>
-                        <a href="{{prefix}}/entry?lemma={{word[0]}}&source={{word[2]}}&target={{target}}&pos={{word[1]}}"> {{word[0]}}, {{word[1]}}</a>
+                        <a target='_blank' href="{{prefix}}/entry?lemma={{word[0]}}&source={{word[2]}}&target={{target}}&pos={{word[1]}}"> {{word[0]}}, {{word[1]}}</a>
                     </td>
                 </tr>
             {% endfor %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} {{word['lemma']}}, {{exm}} {% endblock %}
+{% block title %} {{word['lemma']}}{% endblock %}
 {% block content %}
 <style>
 a{color: red;}
@@ -29,9 +29,23 @@ table{
 td{
     padding: 5px;
 }
-.spoiler_body {display:none;}
+.spoiler_body {display:none; padding: 30px;}
 .spoiler_links {cursor:pointer;}
 
+td.neighbors {
+  vertical-align: top;
+}
+
+b.align {
+  color: #950EA4;
+}
+
+.subheading{
+    margin-left: 20px;
+    font-weight: bold;
+    font-size: 15px;
+    color: #EF0101;
+}
 </style>
 
 <script type="text/javascript">
@@ -46,30 +60,59 @@ $(document).ready(function(){
     <span class="lemma"> {{word['lemma']}}</span>, <span class="pos">{{word['pos']}}</span>
 </div>
 <div class="entry">
-    {% for exm in examples %}
-    {% if examples[exm] %}
-    <div class="row">
-        {{word['lemma']}}, {{exm}}
+    {% for sense in examples %}
+    {% if sense %}
+    <div class="row subheading">
+        {{word['lemma']}} ({{sense['sense']}})
     </div>
-        {% for translation in examples[exm] %}
-            <div>
-             <a href="" class="spoiler_links">n={{translation[0][1]}}, {{translation[0][0].lemma}}, {{translation[0][0].pos}}, {{translation[0][0].sense}}</a>
-                <div class="row spoiler_body">
-                    <table class="col-md-8 row">
+    <div class="row subheading">
+        {{sense['prob']}}
+    </div>
+    <div class="row">
+        <table class = "col-md-10 row">
+            <colgroup>
+                <col style="width:30%">
+                <col style="width:70%">
+            </colgroup>
+            <tr>
+                <td class="neighbors">
+                    <table>
                         <colgroup>
-                            <col style="width:50%">
-                            <col style="width:50%">
-                          </colgroup>
-                            {% for i in translation[1] %}
+                            <col style="width:30%">
+                            <col style="width:70%">
+                        </colgroup>
+                        {% for neighbor in sense['neighbors'] %}
                             <tr>
-                                <td>{{ i[0] | safe }}</td>
-                                <td>{{ i[1] | safe }}</td>
+                                <td>{{neighbor[2]}}</td>
+                                <td>{{neighbor[0]}} {{neighbor[1]}}</td>
                             </tr>
-                            {% endfor %}
+                        {% endfor %}
                     </table>
-                </div>
-            </div>
-        {% endfor %}
+                </td>
+                <td class="neighbors">
+                    {% for translation in sense['translations'] %}
+                        <div>
+                         <a href="" class="spoiler_links">n={{translation[0][1]}}, {{translation[0][0].lemma}}, {{translation[0][0].pos}}, {{translation[0][0].sense}}</a>
+                            <div class="row spoiler_body">
+                                <table class="col-md-12 row">
+                                    <colgroup>
+                                        <col style="width:50%">
+                                        <col style="width:50%">
+                                    </colgroup>
+                                        {% for i in translation[1] %}
+                                        <tr>
+                                            <td>{{ i[0] | safe }}</td>
+                                            <td>{{ i[1] | safe }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    </div>
     {% endif %}
     {% endfor %}
 </div>

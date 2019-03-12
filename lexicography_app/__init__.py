@@ -124,7 +124,7 @@ def process_entry(lemma, pos, source, target, reversed):
     for i in senses:
         #neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
         neighbors = get_neighbors(source, lemma, pos, i)
-        result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0]}
+        result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0], 'id':i[1]}
         result[i[0]]['translations'] = process_one_sense(i[1], target, reversed=reversed)
     result = [result[item] for item in sorted(result, key=lambda x: result[x]['prob'], reverse=True)]
     return result
@@ -135,10 +135,11 @@ def get_neighbors(source, lemma, pos, sense):
     result = [i[0].split('_')+[i[1], i[2]] for i in neighbors]
     return result
 
-def get_examples(left, right):
+
+def get_examples(left, right, limit=10):
     align = defaultdict(lambda: [[], []])
     aligns = Alignment.query.filter(and_(Alignment.id_lemma_left == left,
-                                         Alignment.id_lemma_right == right)).limit(10).all()
+                                         Alignment.id_lemma_right == right)).limit(limit).all()
     for i in aligns:
         align[i.id_sent][0].append(i.id_left)
         align[i.id_sent][1].append(i.id_right)
@@ -198,3 +199,21 @@ def process_one_sense(id_sense, target, reversed):
         result[i[0].id] = [i, examples]
     result = [result[i] for i in sorted(result, key=lambda x: result[x][0][1], reverse=True)]
     return result
+
+
+@app.route("/examples", methods=['GET'])
+def full_examples():
+    if request.args:
+        source = request.args.get('source', type=int)
+        target = request.args.get('target', type=int)
+        reverse = bool(get_reverse(source, target))
+        if not reverse:
+            id_left = request.args.get('id_source', type=int)
+            id_right = request.args.get('id_target', type=int)
+        else:
+            id_right = request.args.get('id_source', type=int)
+            id_left = request.args.get('id_target', type=int)
+        #print(source, target, id_left, id_right)
+        all_examples = get_examples(id_left, id_right, limit=1000)
+        return render_template('examples.html', examples=all_examples)
+    return render_template('examples.html', examples=[])

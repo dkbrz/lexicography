@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %} Примеры {% endblock %}
+{% block content %}
+<style>
+table{
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+td{
+    padding: 5px;
+}
+
+b.align {
+  color: #950EA4;
+}
+
+div.entry{
+    margin-left: 150px;
+	margin-top: 30px;
+}
+</style>
+
+<div class="row entry">
+    <table class="col-md-10 row">
+        <colgroup>
+            <col style="width:50%">
+            <col style="width:50%">
+        </colgroup>
+            {% for exm in examples %}
+            <tr>
+                <td>{{ exm[0] | safe }}</td>
+                <td>{{ exm[1] | safe }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

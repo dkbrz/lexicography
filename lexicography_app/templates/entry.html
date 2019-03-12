@@ -113,6 +113,7 @@ $(document).ready(function(){
                                         </tr>
                                         {% endfor %}
                                 </table>
+                                <a href="{{prefix}}/examples?source={{word['source']}}&target={{word['target']}}&id_source={{sense['id']}}&id_target={{translation[0][0].id}}" target="_blank"> больше примеров </a>
                             </div>
                         </div>
                     {% endfor %}

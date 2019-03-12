@@ -6,7 +6,7 @@ import adagram
 import multiprocessing
 from functools import partial
 
-WINDOW_SIZE = 5
+WINDOW_SIZE = 3
 
 
 def create_folder(name):

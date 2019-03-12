@@ -9,7 +9,7 @@ import warnings
 import argparse
 warnings.filterwarnings("ignore")
 
-WINDOW_SIZE = 5
+WINDOW_SIZE = 3
 
 
 def find_context(ind, words, window=WINDOW_SIZE):
@@ -30,8 +30,11 @@ def find_context(ind, words, window=WINDOW_SIZE):
 
 def find_sense(word, context, model):
     try:
-        probs = model.disambiguate(word, context)
-        sense = np.argmax(probs, axis=0)
+        if '_DET' in word or 'PRON' in word:
+            sense = 0
+        else:
+            probs = model.disambiguate(word, context)
+            sense = np.argmax(probs, axis=0)
     except:
         sense = 0
     return str(sense)

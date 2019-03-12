@@ -46,6 +46,9 @@ b.align {
     font-size: 15px;
     color: #EF0101;
 }
+.neighbor-link{
+    color: green;
+}
 </style>
 
 <script type="text/javascript">
@@ -83,8 +86,12 @@ $(document).ready(function(){
                         </colgroup>
                         {% for neighbor in sense['neighbors'] %}
                             <tr>
-                                <td>{{neighbor[2]}}</td>
-                                <td>{{neighbor[0]}} {{neighbor[1]}}</td>
+                                <td>{{neighbor[3]}}</td>
+                                <td>
+                                    <a class="neighbor-link" href="{{prefix}}/entry?lemma={{neighbor[0]}}&source={{word['source']}}&target={{word['target']}}&pos={{neighbor[1]}}">
+                                    {{neighbor[0]}} {{neighbor[1]}}, {{neighbor[2]}}
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </table>

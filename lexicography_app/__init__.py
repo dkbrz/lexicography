@@ -100,7 +100,9 @@ def entry():
         result = process_entry(lemma, pos, source, target, reverse)
         return render_template('entry.html',
                                word={'lemma': lemma,
-                                     'pos': pos},
+                                     'pos': pos,
+                                     'source': source,
+                                     'target': target},
                                examples=result)
     return render_template('search.html', result=None)
 
@@ -115,14 +117,23 @@ def process_entry(lemma, pos, source, target, reversed):
                                                                 Dictionary.lang == source,
                                                                 Dictionary.pos == pos).all()]
     result = {}
-    probabilities = ADAGRAM[LANGS[source]].word_sense_probs('{}_{}'.format(lemma, pos))
+    try:
+        probabilities = ADAGRAM[LANGS[source]].word_sense_probs('{}_{}'.format(lemma, pos))
+    except:
+        probabilities = []
     for i in senses:
-        neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
+        #neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
+        neighbors = get_neighbors(source, lemma, pos, i)
         result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0]}
         result[i[0]]['translations'] = process_one_sense(i[1], target, reversed=reversed)
     result = [result[item] for item in sorted(result, key=lambda x: result[x]['prob'], reverse=True)]
     return result
 
+
+def get_neighbors(source, lemma, pos, sense):
+    neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), sense[0])
+    result = [i[0].split('_')+[i[1], i[2]] for i in neighbors]
+    return result
 
 def get_examples(left, right):
     align = defaultdict(lambda: [[], []])

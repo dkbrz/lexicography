@@ -55,7 +55,9 @@ def main():
         '--min-freq', '100',
         '--dim', '300',
         '--workers', '8',
-        '--window', '3'
+        '--window', '3',
+        '--prototypes', '3',
+        '--epochs', '3'
     ])
 
 

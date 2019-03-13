@@ -172,7 +172,7 @@ def translations_for_one_sense(id_sense, reversed=False):
                                        )\
             .filter(Alignment.id_lemma_left == id_sense)\
             .group_by(Alignment.id_lemma_right)\
-            .having(n_occurences >= 50)\
+            .having(n_occurences >= 20)\
             .order_by(db.desc(db.func.count(Alignment.id))).all()
     else:
 
@@ -182,7 +182,7 @@ def translations_for_one_sense(id_sense, reversed=False):
                                         ) \
             .filter(Alignment.id_lemma_right == id_sense)\
             .group_by(Alignment.id_lemma_left)\
-            .having(n_occurences >= 50)\
+            .having(n_occurences >= 20)\
             .order_by(db.desc(db.func.count(Alignment.id))).all()
     return translations
 

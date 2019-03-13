@@ -40,7 +40,7 @@ def main():
         with open(f, 'r') as f_r,\
                 open(train_file, 'a') as f_w:
             info = f_r.read().rstrip()
-            info = re.sub('._PUNCT', '', info)
+            info = re.sub('[^ ]+?_PUNCT', '', info)
             info = re.sub(' +', ' ', info)
             info = re.sub('\n ', '\n', info)
             info = re.sub(' \n', '\n', info)
@@ -56,8 +56,7 @@ def main():
         '--dim', '300',
         '--workers', '8',
         '--window', '3',
-        '--prototypes', '3',
-        '--epochs', '3'
+        '--prototypes', '3'
     ])
 
 

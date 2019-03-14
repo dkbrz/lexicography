@@ -1,0 +1,45 @@
+CREATE TABLE `alignment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_sent` int(11) unsigned DEFAULT NULL,
+  `id_left` tinyint(3) unsigned DEFAULT NULL,
+  `id_right` tinyint(3) unsigned DEFAULT NULL,
+  `id_lemma_left` mediumint(8) unsigned DEFAULT NULL,
+  `id_lemma_right` mediumint(8) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `align_index_lemmas` (`id_lemma_left`,`id_lemma_right`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `dictionary` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `lang` tinyint(3) unsigned DEFAULT NULL,
+  `lemma` varchar(45) DEFAULT NULL,
+  `pos` varchar(5) DEFAULT NULL,
+  `sense` tinyint(4) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_dictionary_lang_lemma` (`lang`,`lemma`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `examples` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `sent_left` text,
+  `sent_right` text,
+  `lang_left` tinyint(2) unsigned DEFAULT NULL,
+  `lang_right` tinyint(2) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `langs` (
+  `id` tinyint(3) unsigned NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `n_senses_words` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `pairs` (
+  `id` tinyint(3) unsigned NOT NULL,
+  `id_left` tinyint(3) unsigned DEFAULT NULL,
+  `id_right` tinyint(3) unsigned DEFAULT NULL,
+  `n_examples` int(11) unsigned DEFAULT NULL,
+  `is_reversed` tinyint(1) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

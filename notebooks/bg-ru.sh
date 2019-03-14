@@ -1,6 +1,6 @@
 python3 split_into_small.py bg ru
 python3 run.py bg ru ../models/bulgarian-btb-ud-2.3-181115.udpipe
-python3 run.py ru bg ../models/russian-taiga-ud-2.3-181115.udpipe
+python3 run.py ru bg ../models/russian-syntagrus-ud-2.3-181115.udpipe
 sudo chmod -R a+rwx ../languages/*
 python3 train_adagram.py bg ru
 

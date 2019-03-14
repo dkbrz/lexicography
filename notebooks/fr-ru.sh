@@ -1,6 +1,6 @@
 python3 split_into_small.py fr ru
 python3 run.py fr ru ../models/french-gsd-ud-2.3-181115.udpipe
-python3 run.py ru fr ../models/russian-taiga-ud-2.3-181115.udpipe 
+python3 run.py ru fr ../models/russian-syntagrus-ud-2.3-181115.udpipe
 sudo chmod -R a+rwx ../languages/*
 python3 train_adagram.py fr ru
 

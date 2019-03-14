@@ -23,6 +23,8 @@ def main():
         (the name must match the .txt file name from the corpus)')
     parser.add_argument('lang_2', type=str, help='name of the second language in pair as in downloaded corpus \
             (the name must match the .txt file name from the corpus)')
+    parser.add_argument('--augment', action='store_true', dest='augment')
+
     args = parser.parse_args()
     lang_1 = args.lang_1
     lang_2 = args.lang_2
@@ -46,6 +48,11 @@ def main():
             info = re.sub(' \n', '\n', info)
             f_w.write(info + '\n')
     print('File ' + train_file + ' is ready.')
+
+    if augment:
+        big_train = train_file.replace('train', 'train-big')
+        subprocess.call(['cat', train_file, train_file, train_file, train_file, train_file, '>', big_train])
+        train_file = big_train
 
     print('Training model...')
     subprocess.call([

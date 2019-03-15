@@ -2,7 +2,7 @@ python3 split_into_small.py et ru
 python3 run.py et ru ../models/estonian-edt-ud-2.3-181115.udpipe
 python3 run.py ru et ../models/russian-syntagrus-ud-2.3-181115.udpipe
 sudo chmod -R a+rwx ../languages/*
-python3 train_adagram.py et ru
+python3 train_adagram.py et ru --augment
 
 python3 sense_files.py et ru /home/dkbrz/lexicography/languages/et_ru/et/et.pkl
 python3 sense_files.py ru et /home/dkbrz/lexicography/languages/en_ru/ru/ru.pkl

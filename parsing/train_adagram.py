@@ -49,7 +49,7 @@ def main():
             f_w.write(info + '\n')
     print('File ' + train_file + ' is ready.')
 
-    if augment:
+    if args.augment:
         big_train = train_file.replace('train', 'train-big')
         subprocess.call(['cat', train_file, train_file, train_file, train_file, train_file, '>', big_train])
         train_file = big_train

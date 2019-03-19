@@ -29,7 +29,7 @@ table{
 td{
     padding: 5px;
 }
-.spoiler_body {display:none; padding: 30px;}
+.spoiler_body {display:none; padding: 20px;}
 .spoiler_links {cursor:pointer;}
 
 td.neighbors {
@@ -101,6 +101,9 @@ $(document).ready(function(){
                         <div>
                          <a href="" class="spoiler_links">n={{translation[0][1]}}, {{translation[0][0].lemma}}, {{translation[0][0].pos}}, {{translation[0][0].sense}}</a>
                             <div class="row spoiler_body">
+                                <div class="row">
+                                    <a style="color:blue; padding-left: 15px" href="{{prefix}}/entry?lemma={{translation[0][0].lemma}}&source={{word['target']}}&target={{word['source']}}&pos={{translation[0][0].pos}}" target="_blank"> смотреть статью </a>
+                                </div>
                                 <table class="col-md-12 row">
                                     <colgroup>
                                         <col style="width:50%">
@@ -113,7 +116,7 @@ $(document).ready(function(){
                                         </tr>
                                         {% endfor %}
                                 </table>
-                                <a href="{{prefix}}/examples?source={{word['source']}}&target={{word['target']}}&id_source={{sense['id']}}&id_target={{translation[0][0].id}}" target="_blank"> больше примеров </a>
+                                <a style="color:blue" href="{{prefix}}/examples?source={{word['source']}}&target={{word['target']}}&id_source={{sense['id']}}&id_target={{translation[0][0].id}}" target="_blank"> больше примеров </a>
                             </div>
                         </div>
                     {% endfor %}

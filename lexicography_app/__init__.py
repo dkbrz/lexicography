@@ -45,7 +45,8 @@ for i in os.listdir('./lexicography_app/models/'):
 
 print(ADAGRAM)
 
-LANGS = {1: 'en', 2:'ru'}
+LANGS = {1: 'en', 2: 'ru', 3: 'uk', 4: 'bg'}
+
 
 def create_app():
     app = Flask(__name__, static_url_path='/static', static_folder='static')
@@ -96,7 +97,6 @@ def entry():
         source = request.args.get('source', type=int)
         target = request.args.get('target', type=int)
         reverse = bool(get_reverse(source, target))
-        print(reverse)
         result = process_entry(lemma, pos, source, target, reverse)
         return render_template('entry.html',
                                word={'lemma': lemma,
@@ -118,15 +118,16 @@ def process_entry(lemma, pos, source, target, reversed):
                                                                 Dictionary.pos == pos).all()]
     result = {}
     try:
+    #if True:
         probabilities = ADAGRAM[LANGS[source]].word_sense_probs('{}_{}'.format(lemma, pos))
+        for i in senses:
+            #neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
+            neighbors = get_neighbors(source, lemma, pos, i)
+            result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0], 'id':i[1]}
+            result[i[0]]['translations'] = process_one_sense(i[1], target, reversed=reversed)
+        result = [result[item] for item in sorted(result, key=lambda x: result[x]['prob'], reverse=True)]
     except:
-        probabilities = []
-    for i in senses:
-        #neighbors = ADAGRAM[LANGS[source]].sense_neighbors('{}_{}'.format(lemma, pos), i[0])
-        neighbors = get_neighbors(source, lemma, pos, i)
-        result[i[0]] = {'prob': round(probabilities[i[0]][1], 5), 'neighbors': neighbors, 'sense': i[0], 'id':i[1]}
-        result[i[0]]['translations'] = process_one_sense(i[1], target, reversed=reversed)
-    result = [result[item] for item in sorted(result, key=lambda x: result[x]['prob'], reverse=True)]
+        result = []
     return result
 
 
@@ -155,11 +156,18 @@ def get_examples(left, right, limit=10):
 def prettify(pair, alignment):
     left = pair.sent_left.split()
     right = pair.sent_right.split()
-    for i in alignment[0]:
-        left[i] = '<b class="align">'+left[i]+'</b>'
+    try:
+        for i in alignment[0]:
+            left[i] = '<b class="align">'+left[i]+'</b>'
+    except:
+        left = []
     left = ' '.join(left)
-    for i in alignment[1]:
-        right[i] = '<b class="align">' + right[i] + '</b>'
+
+    try:
+        for i in alignment[1]:
+            right[i] = '<b class="align">' + right[i] + '</b>'
+    except:
+        right = []
     right = ' '.join(right)
     return left, right
 
